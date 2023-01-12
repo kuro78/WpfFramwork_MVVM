@@ -14,17 +14,17 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MVVMFramework;
-
-/// <summary>
-/// Interaction logic for MainWindow.xaml
-/// </summary>
-public partial class MainWindow : Window
+namespace MVVMFramework.Views
 {
-    
-    public MainWindow()
+    /// <summary>
+    /// CustomerPage.xaml에 대한 상호 작용 논리
+    /// </summary>
+    public partial class CustomerPage : Page
     {
-        InitializeComponent();
-        DataContext = App.Current.Services.GetService(typeof(MainViewModel));
+        public CustomerPage()
+        {
+            InitializeComponent();
+            DataContext = App.Current.Services.GetService(typeof(CustomerViewModel));
+        }
     }
 }
