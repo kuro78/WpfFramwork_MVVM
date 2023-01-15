@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using MVVMFramework.Controls;
 using MVVMFramework.ViewModels;
 using System;
 using System.Windows;
@@ -41,6 +42,9 @@ public partial class App : Application
         services.AddTransient(typeof(MainViewModel));
         services.AddTransient(typeof(HomeViewModel));
         services.AddTransient(typeof(CustomerViewModel));
+
+        // Control 등록
+        services.AddTransient(typeof(AboutControl));
 
         return services.BuildServiceProvider();
     }
