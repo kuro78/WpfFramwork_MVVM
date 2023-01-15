@@ -2,6 +2,9 @@
 using CommunityToolkit.Mvvm.Messaging;
 using MVVMFramework.Bases;
 using MVVMFramework.Models;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 
 namespace MVVMFramework.ViewModels;
@@ -11,6 +14,11 @@ namespace MVVMFramework.ViewModels;
 /// </summary>
 public class MainViewModel : ViewModelBase
 {
+    /// <summary>
+    /// Busy 목록
+    /// </summary>
+    private IList<BusyMessage> _busyMessages = new List<BusyMessage>();
+    
     private string _NavigationSource;
     /// <summary>
     /// 네비게이션 소스
@@ -19,6 +27,13 @@ public class MainViewModel : ViewModelBase
     {
         get { return _NavigationSource; }
         set { SetProperty(ref _NavigationSource, value); }
+    }
+
+    private bool _IsBusy;
+    public bool IsBusy
+    {
+        get { return _IsBusy; }
+        set { SetProperty(ref _IsBusy, value); }
     }
 
     /// <summary>
@@ -43,6 +58,41 @@ public class MainViewModel : ViewModelBase
 
         // 네비게이션 메시지 수신 등록
         WeakReferenceMessenger.Default.Register<NavigationMessage>(this, OnNavigationMessage);
+
+        // BusyMessage 수신 등록
+        WeakReferenceMessenger.Default.Register<BusyMessage>(this, OnBusyMessage);
+    }
+    
+    /// <summary>
+    /// 비지 메시지 수신 처리
+    /// </summary>
+    /// <param name="recipient"></param>
+    /// <param name="message"></param>
+    private void OnBusyMessage(object recipient, BusyMessage message)
+    {
+        if (message.Value)
+        {
+            var existsBusy = _busyMessages.FirstOrDefault(b => b.BusyID == message.BusyID);
+            if (existsBusy != null)
+            {
+                // 이미 추가된 녀석이기 때문에 추가하지 않음
+                return;
+            }
+
+            _busyMessages.Add(message);
+        }
+        else
+        {
+            var existValue = _busyMessages.FirstOrDefault(b => b.BusyID == message.BusyID);
+            if (existValue == null)
+            {
+                // 없기 때문에 나감
+                return;
+            }
+            _busyMessages.Remove(existValue);
+        }
+        // _busyMessage에 아이템이 있으면 true, 없으면 false
+        IsBusy = _busyMessages.Any();
     }
 
     /// <summary>

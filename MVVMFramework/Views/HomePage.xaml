@@ -9,10 +9,19 @@
       d:DesignWidth="800"
       mc:Ignorable="d">
 
-    <Grid>
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock FontSize="20" Text="{Binding Title}" />
             <TextBlock Text="{Binding Message}" />
+        </StackPanel>
+
+        <StackPanel Grid.Column="1">
+            <Button Command="{Binding BusyTestCommand}" Content="Busy Test" />
         </StackPanel>
     </Grid>
 </Page>
