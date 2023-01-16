@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MVVMFramework.Controls;
+using MVVMFramework.Services;
 using MVVMFramework.ViewModels;
 using System;
 using System.Windows;
@@ -36,8 +37,10 @@ public partial class App : Application
     /// <returns></returns>
     private static IServiceProvider ConfigureServices()
     {
+        var connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Northwind;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        
         var services = new ServiceCollection();
-
+        
         // ViewModel 등록
         services.AddTransient(typeof(MainViewModel));
         services.AddTransient(typeof(HomeViewModel));
@@ -45,6 +48,9 @@ public partial class App : Application
 
         // Control 등록
         services.AddTransient(typeof(AboutControl));
+
+        // IDatabaseService 싱글톤 등록
+        services.AddSingleton<IDatabaseService, SqlService>(obj => new SqlService(connectionString));
 
         return services.BuildServiceProvider();
     }
