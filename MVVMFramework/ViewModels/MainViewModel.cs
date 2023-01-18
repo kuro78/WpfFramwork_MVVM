@@ -4,6 +4,7 @@ using MVVMFramework.Bases;
 using MVVMFramework.Models;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
 
@@ -86,7 +87,7 @@ public class MainViewModel : ViewModelBase
         WeakReferenceMessenger.Default.Register<BusyMessage>(this, OnBusyMessage);
 
         // LayerPopupMessage 수신 등록
-        WeakReferenceMessenger.Default.Register<LayerPopupMessage>(this, OnLayerPopupMessage);
+        WeakReferenceMessenger.Default.Register<LayerPopupMessage, string>(this, "TEST1", OnLayerPopupMessage);
     }
 
     private void OnLayerPopupMessage(object sender, LayerPopupMessage message)

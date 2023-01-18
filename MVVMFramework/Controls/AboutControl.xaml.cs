@@ -17,6 +17,7 @@ public partial class AboutControl : UserControl
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {
-        WeakReferenceMessenger.Default.Send(new LayerPopupMessage(false));
+        WeakReferenceMessenger.Default.Send(new LayerPopupMessage(false), "TEST1");
+        WeakReferenceMessenger.Default.Send(new LayerPopupMessage(false), "TEST2");
     }
 }

@@ -29,7 +29,7 @@ public class ContentControlBehavior : Behavior<ContentControl>
     }
 
     /// <summary>
-    /// ControlName을 이용해서 컨토를 인스턴스 시켜서 사용
+    /// ControlName을 이용해서 컨트를 인스턴스 시켜서 사용
     /// </summary>
     /// <exception cref="NotImplementedException"></exception>
     private void ResolveControl()

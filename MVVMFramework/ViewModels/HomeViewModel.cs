@@ -13,13 +13,37 @@ public class HomeViewModel : ViewModelBase
     public static int Count { get; set; }
 
     /// <summary>
+    /// 레이어 팝업 출력 여부
+    /// </summary>
+    private bool _ShowLayerPopup;
+    public bool ShowLayerPopup
+    {
+        get { return _ShowLayerPopup; }
+        set { SetProperty(ref _ShowLayerPopup, value); }
+    }
+
+    /// <summary>
+    /// 레이어 팝업 내부 컨트롤 이름
+    /// </summary>
+    private string _ControlName;
+    public string ControlName
+    {
+        get { return _ControlName; }
+        set { SetProperty(ref _ControlName, value); }
+    }
+
+    /// <summary>
     /// Busy 테스트 커맨드
     /// </summary>
     public ICommand BusyTestCommand { get; set; }
     /// <summary>
     /// Layer Popup 테스트 커맨드
     /// </summary>
-    public ICommand LayerPopupTestCommand { get; set; }
+    public ICommand LayerPopupTest1Command { get; set; }
+    /// <summary>
+    /// Layer Popup 테스트 커맨드
+    /// </summary>
+    public ICommand LayerPopupTest2Command { get; set; }
 
     public HomeViewModel() 
     {
@@ -31,12 +55,26 @@ public class HomeViewModel : ViewModelBase
     private void Init()
     {
         BusyTestCommand = new AsyncRelayCommand(OnBusyTestAsync);
-        LayerPopupTestCommand = new RelayCommand(OnLayerPopupTest);
+        LayerPopupTest1Command = new RelayCommand(OnLayerPopupTest1);
+        LayerPopupTest2Command = new RelayCommand(OnLayerPopupTest2);
+
+        WeakReferenceMessenger.Default.Register<LayerPopupMessage, string>(this, "TEST2", OnLayerPopupMessage);
     }
 
-    public void OnLayerPopupTest()
+    private void OnLayerPopupMessage(object sender, LayerPopupMessage message)
     {
-        WeakReferenceMessenger.Default.Send(new LayerPopupMessage(true) { ControlName = "AboutControl" });
+        ShowLayerPopup = message.Value;
+        ControlName = message.ControlName;
+    }
+
+    public void OnLayerPopupTest1()
+    {
+        WeakReferenceMessenger.Default.Send(new LayerPopupMessage(true) { ControlName = "AboutControl" }, "TEST1");
+    }
+
+    public void OnLayerPopupTest2()
+    {
+        WeakReferenceMessenger.Default.Send(new LayerPopupMessage(true) { ControlName = "AboutControl" }, "TEST2");
     }
 
 
